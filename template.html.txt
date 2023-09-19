@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Scraped Content</title>
+</head>
+<body>
+    <div class="download-links-div" style="text-align: center">
+        {% for item in items %}
+        <h4>
+            {{ item.title }}
+            <span>
+                {{ item.language }}
+            </span>
+            {{ item.quality }}
+        </h4>
+        <div class="downloads-btns-div">
+            <a class="btn" href="{{ item.link }}" rel="nofollow noopener noreferrer" target="_blank">
+                Download Links
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>
