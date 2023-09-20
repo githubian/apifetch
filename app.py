@@ -1,3 +1,4 @@
+import os
 import requests
 from bs4 import BeautifulSoup
 from flask import Flask, render_template, request
@@ -6,16 +7,17 @@ app = Flask(__name__)
 
 @app.route('/')
 def scrape_video_page():
-    # Get the video URL from the query parameters
-    video_url = request.args.get('video_url')
+    try:
+        # Get the video URL from the query parameters
+        video_url = request.args.get('video_url')
 
-    if not video_url:
-        return "Please provide a video URL by appending ?video_url=YOUR_URL to the URL."
+        if not video_url:
+            return "Please provide a video URL by appending ?video_url=YOUR_URL to the URL."
 
-    # Make a request to the video URL
-    response = requests.get(video_url)
+        # Make a request to the video URL
+        response = requests.get(video_url)
+        response.raise_for_status()  # Raise an exception for 4xx and 5xx status codes
 
-    if response.status_code == 200:
         video_page = BeautifulSoup(response.text, 'html.parser')
 
         # Find the div element with class "download-links-div"
@@ -35,8 +37,12 @@ def scrape_video_page():
             return render_template('template.html', items=items)
         else:
             return "Could not find the 'download-links-div' element."
-    else:
-        return "Failed to retrieve the video page."
+    except requests.exceptions.RequestException as e:
+        return f"Failed to retrieve the video page. Error: {str(e)}"
+    except Exception as e:
+        return f"An error occurred: {str(e)}"
 
 if __name__ == '__main__':
-    app.run()
+    # Use the PORT environment variable provided by Heroku, or default to 5000 if running locally
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)
