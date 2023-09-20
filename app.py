@@ -1,13 +1,16 @@
 import requests
 from bs4 import BeautifulSoup
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 
 @app.route('/')
 def scrape_video_page():
-    # Input your video URL
-    video_url = "https://movies4u.vip/basic-instinct-1992-dual-audio-hindi-english/"
+    # Get the video URL from the query parameters
+    video_url = request.args.get('video_url')
+
+    if not video_url:
+        return "Please provide a video URL by appending ?video_url=YOUR_URL to the URL."
 
     # Make a request to the video URL
     response = requests.get(video_url)
