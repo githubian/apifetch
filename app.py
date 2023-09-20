@@ -7,13 +7,13 @@ app = Flask(__name__)
 
 @app.route('/')
 def scrape_video_page():
-    # Get the video URL from the query parameters
-    video_url = request.args.get('video_url')
-
-    if not video_url:
-        return "Please provide a video URL by appending ?video_url=YOUR_URL to the URL."
-
     try:
+        # Get the video URL from the query parameters
+        video_url = request.args.get('video_url')
+
+        if not video_url:
+            return "Please provide a video URL by appending ?video_url=YOUR_URL to the URL."
+
         # Make a request to the video URL
         response = requests.get(video_url)
         response.raise_for_status()  # Raise an exception for 4xx and 5xx status codes
@@ -39,6 +39,8 @@ def scrape_video_page():
             return "Could not find the 'download-links-div' element."
     except requests.exceptions.RequestException as e:
         return f"Failed to retrieve the video page. Error: {str(e)}"
+    except Exception as e:
+        return f"An error occurred: {str(e)}"
 
 if __name__ == '__main__':
     # Use the PORT environment variable provided by Heroku, or default to 5000 if running locally
