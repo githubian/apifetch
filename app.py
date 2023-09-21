@@ -2,8 +2,12 @@ import os
 import requests
 from bs4 import BeautifulSoup
 from flask import Flask, request
+from flask_cors import CORS
 
 app = Flask(__name__)
+
+# Configure CORS to allow requests only from www.movielink.xyz
+cors = CORS(app, resources={r"/": {"origins": "https://www.movielink.xyz"}})
 
 @app.route('/')
 def scrape_video_page():
