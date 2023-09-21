@@ -1,7 +1,7 @@
 import os
 import requests
 from bs4 import BeautifulSoup
-from flask import Flask, render_template, request
+from flask import Flask, request
 
 app = Flask(__name__)
 
@@ -33,8 +33,14 @@ def scrape_video_page():
                 link = a_tag['href']
                 items.append({'title': title, 'language': language, 'quality': quality, 'link': link})
 
-            # Render the HTML template with the extracted data
-            return render_template('template.html', items=items)
+            # Create an HTML response directly in Python
+            html_response = "<html><body>"
+            for item in items:
+                html_response += f"<h4>{item['title']}<span>{item['language']}</span>{item['quality']}</h4>"
+                html_response += f"<div class='downloads-btns-div'><a class='btn' href='{item['link']}' rel='nofollow noopener noreferrer' target='_blank'>Download Links</a></div>"
+            html_response += "</body></html>"
+
+            return html_response
         else:
             return "Could not find the 'download-links-div' element."
     except requests.exceptions.RequestException as e:
