@@ -6,8 +6,8 @@ from flask_cors import CORS
 
 app = Flask(__name__)
 
-# Configure CORS to allow requests only from www.movielink.xyz
-cors = CORS(app, resources={r"/": {"origins": "https://www.movielink.xyz","https://movizart.blogspot.com/"}})
+# Configure CORS to allow requests only from www.movielink.xyz and https://movizart.blogspot.com/
+cors = CORS(app, resources={r"/": {"origins": ["https://www.movielink.xyz", "https://movizart.blogspot.com/"]}})
 
 @app.route('/')
 def scrape_video_page():
