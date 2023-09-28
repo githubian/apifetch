@@ -28,6 +28,13 @@ def scrape_video_page():
         download_links_div = video_page.find('div', class_='download-links-div')
 
         if download_links_div:
+            # Add a 'style' attribute to set 'text-align: center'
+            download_links_div['style'] = 'text-align: center'
+
+            # Remove all <img> tags within the "download-links-div"
+            for img_tag in download_links_div.find_all('img'):
+                img_tag.extract()
+
             # Find all <a> tags within the "download-links-div" and extract relevant information
             items = []
             for a_tag in download_links_div.find_all('a', class_='btn'):
