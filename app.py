@@ -51,7 +51,7 @@ def scrape_video_page():
                 html_response += f"<div class='downloads-btns-div'><a class='btn' href='{item['link']}' rel='nofollow noopener noreferrer' target='_blank'>Download Links</a></div>"
             html_response += "</body></html>"
 
-             return html_response
+            return html_response
         else:
             return "Could not find the 'download-links-div' element."
     except requests.exceptions.RequestException as e:
