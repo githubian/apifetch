@@ -51,13 +51,17 @@ def scrape_video_page():
                 html_response += f"<div class='downloads-btns-div'><a class='btn' href='{item['link']}' rel='nofollow noopener noreferrer' target='_blank'>Download Links</a></div>"
             html_response += "</body></html>"
 
-            return html_response
+             return html_response
         else:
             return "Could not find the 'download-links-div' element."
     except requests.exceptions.RequestException as e:
-        return f"Failed to retrieve the video page. Error: {str(e)}"
+        # Log the error for debugging purposes
+        print(f"Failed to retrieve the video page. Error: {str(e)}")
+        return "Failed to retrieve the video page. Please try again later."
     except Exception as e:
-        return f"An error occurred: {str(e)}"
+        # Log the error for debugging purposes
+        print(f"An error occurred: {str(e)}")
+        return "An error occurred while processing the request. Please try again later."
 
 if __name__ == '__main__':
     # Use the PORT environment variable provided by Heroku, or default to 5000 if running locally
